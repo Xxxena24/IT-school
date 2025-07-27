@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>IT-школа «На стажку»</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9; color: #222; }
+    header { background-color: #2a2eb4; color: white; padding: 30px 20px; text-align: center; }
+    header img { max-width: 80px; vertical-align: middle; margin-right: 20px; }
+    header h1 { display: inline-block; vertical-align: middle; margin: 0; }
+
+    main { padding: 40px 20px; max-width: 900px; margin: auto; }
+
+    section { margin-bottom: 40px; }
+    h2 { color: #2a2eb4; }
+
+    .price-box { background-color: #e7f9f7; padding: 20px; border-left: 5px solid #009688; margin: 10px 0; }
+
+    .form-group input, .form-group textarea {
+      display: block; width: 100%; margin-top: 10px; padding: 10px; font-size: 16px;
+      border: 1px solid #ccc; border-radius: 4px;
+    }
+    .form-group button {
+      margin-top: 15px; padding: 12px 25px; background-color: #2a2eb4;
+      color: white; border: none; font-size: 16px; cursor: pointer; border-radius: 4px;
+    }
+
+    footer { background-color: #2a2eb4; color: white; text-align: center; padding: 20px; }
+
+    .review {
+      background-color: white;
+      border-left: 4px solid #2a2eb4;
+      padding: 15px; margin-bottom: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="logo.png" alt="Логотип">
+  <h1>IT-школа «На стажку»</h1>
+</header>
+
+<main>
+  <section id="about">
+    <h2>Приветствуем!</h2>
+    <p>Рады видеть вас в нашем сообществе — месте, где каждый может прокачать свои навыки и пройти пробное собеседование в IT-компанию по интересующему направлению.</p>
+    <p><strong>«На стажку» — это:</strong></p>
+    <ul>
+      <li>✅ Пошаговая система обучения от преподавателей из топовых IT-компаний</li>
+      <li>✅ Полезные материалы и практика</li>
+      <li>✅ Подготовка к реальным собеседованиям</li>
+      <li>✅ Поддержка наставников и обратная связь</li>
+    </ul>
+  </section>
+
+  <section id="programs">
+    <h2>Мы готовим по направлениям:</h2>
+    <ul>
+      <li>📘 Математика: линал, матан, теорвер</li>
+      <li>📊 Аналитика: SQL, матстат</li>
+      <li>🧠 Алгоритмы</li>
+      <li>🤖 Машинное обучение и DL</li>
+      <li>➕ Другое — по согласованию</li>
+    </ul>
+  </section>
+
+  <section id="prices">
+    <h2>Прайс</h2>
+    <div class="price-box">👤 Индивидуальное занятие: <strong>3000р/ч</strong></div>
+    <div class="price-box">👥 Группа из 2-х человек: <strong>2500р/ч</strong></div>
+    <div class="price-box">👥 Группа из 3-х человек: <strong>2000р/ч</strong></div>
+    <div class="price-box">🧪 Пробное собеседование: <strong>2000р</strong></div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div class="review">
+      <strong>Алексей, студент:</strong>
+      <p>Прошёл собес в big tech после 2 месяцев обучения — огромное спасибо!</p>
+    </div>
+    <div class="review">
+      <strong>Мария, 3 курс:</strong>
+      <p>Хорошая структура и отзывчивые наставники. Мне понравилось!</p>
+    </div>
+  </section>
+
+  <section id="signup">
+    <h2>Записаться</h2>
+    <form onsubmit="handleForm(event)">
+      <div class="form-group">
+        <input type="text" name="name" placeholder="Ваше имя" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Какие направления интересуют?" required></textarea>
+        <button type="submit">Отправить</button>
+      </div>
+      <p id="form-response" style="color: green;"></p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>Контакт: @nastazhku_bot | Email: info@nastazhku.ru</p>
+</footer>
+
+<script>
+  const botToken = 'ТВОЙ_ТОКЕН';
+  const chatId = 'ТВОЙ_CHAT_ID';
+
+  function handleForm(event) {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+
+    const text = `
+📥 Новая заявка с сайта:
+👤 Имя: ${name}
+📧 Email: ${email}
+📘 Направление: ${message}
+`;
+
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: text })
+    }).then(() => {
+      document.getElementById('form-response').textContent = "Спасибо за заявку! Мы свяжемся с вами.";
+      form.reset();
+    }).catch(() => {
+      document.getElementById('form-response').textContent = "Произошла ошибка. Попробуйте позже.";
+    });
+  }
+</script>
+
+</body>
+</html>
+
